@@ -10,6 +10,11 @@ public class OrdinaryLeastSquares {
     private int n;
     private ArrayList<Double> xi;
     private ArrayList<Double> yi;
+    private ArrayList<Double> xiyi;
+    private ArrayList<Double> xiPow2;
+    private ArrayList<Double> xiPow3;
+    private ArrayList<Double> xiPow4;
+    private ArrayList<Double> xiPow2ToYi;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
         this.num_of_formula = num_of_formula;
@@ -17,16 +22,71 @@ public class OrdinaryLeastSquares {
         this.step_of_x = step_of_x;
         n = 8;
         xi = new ArrayList<Double>();
-        generateXi();
         yi = new ArrayList<Double>();
+        xiyi = new ArrayList<Double>();
+        xiPow2 = new ArrayList<Double>();
+        xiPow3 = new ArrayList<Double>();
+        xiPow4 = new ArrayList<Double>();
+        xiPow2ToYi = new ArrayList<Double>();
+        generateXi();
         generateYi();
+        generateXiPow2();
+        generateXiPow3();
+        generateXiPow4();
+        generateXiPow2ToYi();
+        generateXiYi();
         //TODO: generating results, deleting the worst and recalculation
         /*result = getResultOfIntegration(1);
         result_2 = getResultOfIntegration(2);*/
         //isCorrect = OrdinaryLeastSquares(result, result_2);
     }
 
-    private void generateYi() {
+    private void generateXiYi () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = xi.get(i)*yi.get(i);
+            xiyi.add(next);
+            sum += next;
+        }
+        xiyi.add(sum);
+    }
+    private void generateXiPow2ToYi () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = xiPow2.get(i)*yi.get(i);
+            xiPow2ToYi.add(next);
+            sum += next;
+        }
+        xiPow2ToYi.add(sum);
+    }
+    private void generateXiPow4 () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = Math.pow(xi.get(i), 4);
+            xiPow4.add(next);
+            sum += next;
+        }
+        xiPow4.add(sum);
+    }
+    private void generateXiPow3 () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = Math.pow(xi.get(i), 3);
+            xiPow3.add(next);
+            sum += next;
+        }
+        xiPow3.add(sum);
+    }
+    private void generateXiPow2 () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = Math.pow(xi.get(i), 2);
+            xiPow2.add(next);
+            sum += next;
+        }
+        xiPow2.add(sum);
+    }
+    private void generateYi () {
         double next, sum = 0;
         for (int i = 0; i < n; i++) {
             next = formula(num_of_formula, xi.get(i));
@@ -35,7 +95,7 @@ public class OrdinaryLeastSquares {
         }
         yi.add(sum);
     }
-    private void generateXi() {
+    private void generateXi () {
         double next, sum = 0;
         for (int i = 0; i < n; i++) {
             next = x + i*step_of_x;
