@@ -10,10 +10,6 @@ public class OrdinaryLeastSquares {
     private int n;
     private ArrayList<Double> xi;
     private ArrayList<Double> yi;
-    private double result;
-    private double result_2;
-    private boolean isCorrect = false;
-    private double rungeRuleOffset;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
         this.num_of_formula = num_of_formula;
@@ -31,14 +27,22 @@ public class OrdinaryLeastSquares {
     }
 
     private void generateYi() {
+        double next, sum = 0;
         for (int i = 0; i < n; i++) {
-            yi.add(formula(num_of_formula, xi.get(i)));
+            next = formula(num_of_formula, xi.get(i));
+            yi.add(next);
+            sum += next;
         }
+        yi.add(sum);
     }
     private void generateXi() {
+        double next, sum = 0;
         for (int i = 0; i < n; i++) {
-            xi.add(x + i*step_of_x);
+            next = x + i*step_of_x;
+            xi.add(next);
+            sum += next;
         }
+        xi.add(sum);
     }
 
     private double formula(int num, double x) {
