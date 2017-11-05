@@ -16,6 +16,7 @@ public class OrdinaryLeastSquares {
     private ArrayList<Double> xiPow4;
     private ArrayList<Double> xiPow2ToYi;
     private double matrix[][];
+    private double result[][];
     double a, b, c;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
@@ -38,15 +39,13 @@ public class OrdinaryLeastSquares {
         generateXiPow2ToYi();
         generateXiYi();
         matrix = new double[][]{
-                {xiPow4.get(n), xiPow3.get(n), xiPow2.get(n)},
-                {xiPow3.get(n), xiPow2.get(n), xi.get(n)},
-                {xiPow2.get(n), xi.get(n), n}
+                {xiPow4.get(n), xiPow3.get(n), xiPow2.get(n), xiPow2ToYi.get(n)},
+                {xiPow3.get(n), xiPow2.get(n), xi.get(n), xiyi.get(n)},
+                {xiPow2.get(n), xi.get(n), n, yi.get(n)}
         };
         inversionOfMatrix(matrix, 3);
+        result = matrixMultiplication();
         //TODO: generating results, deleting the worst and recalculation
-        /*result = getResultOfIntegration(1);
-        result_2 = getResultOfIntegration(2);*/
-        //isCorrect = OrdinaryLeastSquares(result, result_2);
     }
 
     private void findParametersABC () {
@@ -133,6 +132,19 @@ public class OrdinaryLeastSquares {
 
     }
 
+    private double[][] matrixMultiplication () {
+        double[][] C = new double[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 1; j++) {
+                for (int k = 0; k < 3; k++) {
+                    C[i][j] += matrix[i][k] * matrix[k][3+j];
+                    System.out.print(C[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+        return C;
+    }
     void inversionOfMatrix (double [][]A, int N) {
         double temp;
         double [][] E = new double [N][N];
