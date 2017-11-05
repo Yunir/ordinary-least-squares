@@ -15,6 +15,9 @@ public class OrdinaryLeastSquares {
     private ArrayList<Double> xiPow3;
     private ArrayList<Double> xiPow4;
     private ArrayList<Double> xiPow2ToYi;
+    private ArrayList<Double> yiDb;
+    private ArrayList<Double> d;
+    private ArrayList<Double> dPow2;
     private double matrix[][];
     private double result[][];
     double a, b, c;
@@ -31,6 +34,9 @@ public class OrdinaryLeastSquares {
         xiPow3 = new ArrayList<Double>();
         xiPow4 = new ArrayList<Double>();
         xiPow2ToYi = new ArrayList<Double>();
+        yiDb = new ArrayList<Double>();
+        d = new ArrayList<Double>();
+        dPow2 = new ArrayList<Double>();
         generateXi();
         generateYi();
         generateXiPow2();
@@ -45,11 +51,40 @@ public class OrdinaryLeastSquares {
         };
         inversionOfMatrix(matrix, 3);
         result = matrixMultiplication();
+        a = result[0][0];
+        b = result[0][1];
+        c = result[0][2];
+        findYiDb();
+        findD();
+        findDpow2();
         //TODO: generating results, deleting the worst and recalculation
     }
-
-    private void findParametersABC () {
-
+    private void findDpow2 () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = Math.pow(yiDb.get(i), 2);
+            dPow2.add(next);
+            sum += next;
+        }
+        dPow2.add(sum);
+    }
+    private void findD () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = yi.get(i) - yiDb.get(i);
+            d.add(next);
+            sum += next;
+        }
+        d.add(sum);
+    }
+    private void findYiDb () {
+        double next, sum = 0;
+        for (int i = 0; i < n; i++) {
+            next = a*xiPow2.get(i) + b*xi.get(i) + c;
+            yiDb.add(next);
+            sum += next;
+        }
+        yiDb.add(sum);
     }
 
     private void generateXiYi () {
@@ -133,14 +168,12 @@ public class OrdinaryLeastSquares {
     }
 
     private double[][] matrixMultiplication () {
-        double[][] C = new double[3][3];
+        double[][] C = new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 1; j++) {
                 for (int k = 0; k < 3; k++) {
                     C[i][j] += matrix[i][k] * matrix[k][3+j];
-                    System.out.print(C[i][j] + " ");
                 }
-                System.out.println();
             }
         }
         return C;
