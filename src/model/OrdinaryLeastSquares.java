@@ -15,6 +15,8 @@ public class OrdinaryLeastSquares {
     private ArrayList<Double> xiPow3;
     private ArrayList<Double> xiPow4;
     private ArrayList<Double> xiPow2ToYi;
+    private double matrix[][];
+    double a, b, c;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
         this.num_of_formula = num_of_formula;
@@ -35,10 +37,20 @@ public class OrdinaryLeastSquares {
         generateXiPow4();
         generateXiPow2ToYi();
         generateXiYi();
+        matrix = new double[][]{
+                {xiPow4.get(n), xiPow3.get(n), xiPow2.get(n)},
+                {xiPow3.get(n), xiPow2.get(n), xi.get(n)},
+                {xiPow2.get(n), xi.get(n), n}
+        };
+        inversionOfMatrix(matrix, 3);
         //TODO: generating results, deleting the worst and recalculation
         /*result = getResultOfIntegration(1);
         result_2 = getResultOfIntegration(2);*/
         //isCorrect = OrdinaryLeastSquares(result, result_2);
+    }
+
+    private void findParametersABC () {
+
     }
 
     private void generateXiYi () {
@@ -119,5 +131,51 @@ public class OrdinaryLeastSquares {
                 return (Math.cos(x)/(Math.pow(x, 2) + 1));
         }
 
+    }
+
+    void inversionOfMatrix (double [][]A, int N) {
+        double temp;
+        double [][] E = new double [N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++) {
+                E[i][j] = 0f;
+
+                if (i == j)
+                    E[i][j] = 1f;
+            }
+
+        for (int k = 0; k < N; k++) {
+            temp = A[k][k];
+
+            for (int j = 0; j < N; j++) {
+                A[k][j] /= temp;
+                E[k][j] /= temp;
+            }
+
+            for (int i = k + 1; i < N; i++) {
+                temp = A[i][k];
+
+                for (int j = 0; j < N; j++) {
+                    A[i][j] -= A[k][j] * temp;
+                    E[i][j] -= E[k][j] * temp;
+                }
+            }
+        }
+
+        for (int k = N - 1; k > 0; k--) {
+            for (int i = k - 1; i >= 0; i--) {
+                temp = A[i][k];
+                for (int j = 0; j < N; j++) {
+                    A[i][j] -= A[k][j] * temp;
+                    E[i][j] -= E[k][j] * temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                A[i][j] = E[i][j];
+            }
+        }
     }
 }
