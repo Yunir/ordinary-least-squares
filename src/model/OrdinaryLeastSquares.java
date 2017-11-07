@@ -20,7 +20,7 @@ public class OrdinaryLeastSquares {
     private ArrayList<Double> dPow2;
     private double matrix[][];
     private double result[][];
-    double a, b, c;
+    private double a, b, c;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
         this.num_of_formula = num_of_formula;
@@ -52,8 +52,8 @@ public class OrdinaryLeastSquares {
         inversionOfMatrix(matrix, 3);
         result = matrixMultiplication();
         a = result[0][0];
-        b = result[0][1];
-        c = result[0][2];
+        b = result[1][0];
+        c = result[2][0];
         findYiDb();
         findD();
         findDpow2();
@@ -222,5 +222,30 @@ public class OrdinaryLeastSquares {
                 A[i][j] = E[i][j];
             }
         }
+    }
+
+    public double getA() {
+        return a;
+    }
+    public double getB() {
+        return b;
+    }
+    public double getC() {
+        return c;
+    }
+    public int getN() {
+        return n;
+    }
+    public ArrayList<Double> getXi() {
+        return xi;
+    }
+    public ArrayList<Double> getYi() {
+        return yi;
+    }
+    public ArrayList<Double> getYiDb() {
+        return yiDb;
+    }
+    public ArrayList<Double> getdPow2() {
+        return dPow2;
     }
 }
