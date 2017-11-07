@@ -21,6 +21,7 @@ public class OrdinaryLeastSquares {
     private double matrix[][];
     private double result[][];
     private double a, b, c;
+    private int worst_ind;
 
     public OrdinaryLeastSquares(int num_of_formula, double x, double step_of_x) {
         this.num_of_formula = num_of_formula;
@@ -56,17 +57,43 @@ public class OrdinaryLeastSquares {
         c = result[2][0];
         findYiDb();
         findD();
-        findDpow2();
-        //TODO: generating results, deleting the worst and recalculation
+        worst_ind = findDpow2();
     }
-    private void findDpow2 () {
+
+    public void calculateNewOLS () {
+        yiDb = new ArrayList<Double>();
+        d = new ArrayList<Double>();
+        dPow2 = new ArrayList<Double>();
+        matrix = new double[][]{
+                {xiPow4.get(n)-xiPow4.get(worst_ind), xiPow3.get(n)-xiPow3.get(worst_ind), xiPow2.get(n)-xiPow2.get(worst_ind), xiPow2ToYi.get(n)-xiPow2ToYi.get(worst_ind)},
+                {xiPow3.get(n)-xiPow3.get(worst_ind), xiPow2.get(n)-xiPow2.get(worst_ind), xi.get(n)-xi.get(worst_ind), xiyi.get(n)-xiyi.get(worst_ind)},
+                {xiPow2.get(n)-xiPow2.get(worst_ind), xi.get(n)-xi.get(worst_ind), n-1, yi.get(n)-yi.get(worst_ind)}
+        };
+        inversionOfMatrix(matrix, 3);
+        result = matrixMultiplication();
+        a = result[0][0];
+        b = result[1][0];
+        c = result[2][0];
+        findYiDb();
+        findD();
+        int s = findDpow2();
+    }
+
+    private int findDpow2 () {
         double next, sum = 0;
+        int ind = -1;
+        double max = -1;
         for (int i = 0; i < n; i++) {
             next = Math.pow(yiDb.get(i), 2);
+            if (max < next) {
+                ind = i;
+                max = next;
+            }
             dPow2.add(next);
             sum += next;
         }
         dPow2.add(sum);
+        return ind;
     }
     private void findD () {
         double next, sum = 0;
@@ -247,5 +274,8 @@ public class OrdinaryLeastSquares {
     }
     public ArrayList<Double> getdPow2() {
         return dPow2;
+    }
+    public int getWorst_ind() {
+        return worst_ind;
     }
 }
