@@ -89,9 +89,11 @@ public class OrdinaryLeastSquares {
                 ind = i;
                 max = next;
             }
+            System.out.print(next + " ");
             dPow2.add(next);
             sum += next;
         }
+        System.out.println("Max = " + max + " of index = " + ind);
         dPow2.add(sum);
         return ind;
     }
@@ -179,15 +181,26 @@ public class OrdinaryLeastSquares {
     }
 
     private double formula(int num, double x) {
+        double n1, n2, n3;
         switch(num) {
             case 1:
-                return (Math.cos(x)/(Math.pow(x, 2) + 1));
+                n1 = Math.cos(x);
+                n2 = (Math.pow(x, 2) + 1);
+                n3 = n1/n2;
+                return n3;
             case 2:
-                return (Math.sqrt(1+2*Math.pow(x,2)-Math.pow(x,3)));
+                n1 = 1+2*Math.pow(x,2)-Math.pow(x,3);
+                //n2 = Math.sqrt(n1);
+                return n1;
             case 3:
-                return (1/Math.sqrt(3+Math.pow(x, 5)));
+                n1 = 3+Math.pow(x, 5);
+                //n2 = Math.sqrt(n1);
+                n3 = 1/n1;
+                return n3;
             case 4:
-                return (Math.sqrt(Math.pow(x, 2)+3));
+                n1 = Math.pow(x, 2)+3;
+                //n2 = Math.sqrt(n1);
+                return n1;
             default:
                 return (Math.cos(x)/(Math.pow(x, 2) + 1));
         }
