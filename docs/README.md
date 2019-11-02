@@ -6,4 +6,4 @@ The program considers the coefficients of the approximating function. It calcula
 As a result, a graph should be drawn, on which the starting points, the first graph, the second graph are drawn. The coefficients of the approximating function calculated two times must also be displayed.
 
 ## Preview
-![Preview image of program](preview.png)
+![Preview image of program](preview.PNG)
